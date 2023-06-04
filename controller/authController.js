@@ -37,7 +37,7 @@ const createSendToken = (user, statusCode, res) => {
 exports.signup = catchAsync(async (req, res, next) => {
    const newUser = await User.create(req.body);
    const url = `${req.protocol}://${req.get('host')}/me`
-   console.log(url)
+   // console.log(url)
    await new Email(newUser, url).sendWelcome()
    createSendToken(newUser, 201, res)
 })
@@ -101,7 +101,6 @@ exports.protect = catchAsync(async (req, res, next) => {
    //GRANT ACCESS TO PROTECTED ROUTE
    req.user = currentUser
    res.locals.user = currentUser
-   console.log(req.user)
    next()
 })
 
@@ -138,7 +137,6 @@ exports.restrictTo = (...roles) => {
       if (!roles.includes(req.user.role)) {
          return next(new AppError('You do not have the permission to perform this action', 403))
       }
-      console.log('Roles', roles)
       next()
    }
 }
